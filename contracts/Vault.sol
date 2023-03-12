@@ -1,12 +1,17 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.4 <0.9.0;
 
-contract Vault {
+pragma solidity ^0.8.0;
+
+import "./TimeLock.sol";
+
+contract Vault is TimeLock {
     uint256 constant private _WITHDRAW_AMOUNT = 0.1 ether;
+
+    constructor() TimeLock(1 days) { }
 
     function deposit() external payable { }
 
-    function withdraw() external {
+    function withdraw() external timeLocked {
         require(
             address(this).balance >= _WITHDRAW_AMOUNT,
             "Insufficient funds"
